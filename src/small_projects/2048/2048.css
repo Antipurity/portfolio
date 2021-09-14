@@ -1,0 +1,65 @@
+html {
+  background-color: #000f16;
+  color: #ffeec8;
+}
+.site {
+  text-align: center;
+}
+.site>.plots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.grid {
+  position: relative;
+  min-height: 20em;
+  min-width: 20em;
+  display: inline-block;
+  margin: 5em;
+}
+.grid-foreground, .grid-background {
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+.grid-background {
+  filter: url(#blur-sharpen)
+}
+.grid>button {
+  position: absolute;
+  background-color: #2a2a2a;
+  border: none;
+  color: white;
+  transition: background-color .2s, color .3s;
+}
+.grid>button:hover {
+  background-color: #5f5f5f;
+}
+.grid>button:disabled {
+  background-color: #0000;
+  color: gray;
+}
+.cell {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2em;
+  transition: left .4s, top .4s;
+  animation: fadein .5s;
+  font-family: Roboto, sans-serif;
+}
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.site .plot {
+  width: 20em;
+}
+.site .plot path {
+  stroke: #5061ff;
+  fill: #05111b;
+}
