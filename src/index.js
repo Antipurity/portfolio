@@ -18,19 +18,30 @@ Vue.component('animated-text', {
 window.app = new Vue({
   el: '#app',
   data:{
-    message: 'Hello Vue!',
-    count: 0,
-    text: '',
-    items: [1,2,3,4],
-  },
-  methods:{
-    shuffle(a) {
-      for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1))
-        var tmp = a[i]
-        Vue.set(a, i, a[j])
-        Vue.set(a, j, tmp)
-      }
-    },
+    title: 'software engineer',
+    business: 'builds stuff',
   },
 })
+
+
+
+// Intermittently, update the description randomly.
+function pick(a) { return a[Math.random() * a.length | 0] }
+setTimeout(function f() {
+  // TODO: More descriptive & concrete things.
+  app.title = pick([
+    'software engineer',
+    'developer',
+    'person',
+  ])
+  setTimeout(f, Math.random() * 20000)
+}, Math.random() * 20000)
+setTimeout(function f() {
+  // TODO: More descriptive & concrete things.
+  app.business = pick([
+    'builds stuff',
+    'delivers code',
+    'creates experiences',
+  ])
+  setTimeout(f, Math.random() * 20000)
+}, Math.random() * 20000)

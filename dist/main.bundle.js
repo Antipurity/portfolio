@@ -114,7 +114,6 @@ Vue.component('world', {
       ])
   },
   data() {
-    const world = this
     const views = [], links = new Map
     this.engine = Matter.Engine.create({
       enableSleeping: true,
@@ -125,11 +124,10 @@ Vue.component('world', {
     this.updateViews = function() {
       const transforms = views.map(view => {
         // Rotate, then translate by in-world position, plus the static-layout movement since creation.
-        const el = view.$el, body = view.body
+        const body = view.body
         if (body.isSleeping) return
         const x1 = body.position.x, y1 = body.position.y
         const firstPos = view.initialPos
-        const curPos = _getStaticElemPos(el, world.$el)
         const x2 = x1 - firstPos.x
         const y2 = y1 - firstPos.y
         return `translate(${x2 | 0}px,${y2 | 0}px) rotate(${body.angle}rad)`
@@ -206,6 +204,10 @@ Vue.component('world', {
     // Also some mouse constraints.
     if (this.allowDragging) {
       const mouse = Matter.Mouse.create(this.$el)
+      // What the fuck, Matter.js. Why prevent scrolling?
+      //   https://github.com/liabru/matter-js/blob/master/src/core/Mouse.js
+      this.$el.removeEventListener('mousewheel', mouse.mousewheel)
+      this.$el.removeEventListener('DOMMouseScroll', mouse.mousewheel)
       const mouseConstraint = Matter.MouseConstraint.create(this.engine, {
         mouse,
         constraint:{
@@ -262,7 +264,7 @@ Vue.component('obj', {
     static:{ type: Boolean, default: false, },
     density:{ type: Number, default: 1, },
     restitution:{ type: Number, default: .3, },
-    friction:{ type: Number, default: .4, },
+    friction:{ type: Number, default: .7, },
     frictionAir:{ type: Number, default: .0003, },
     frictionStatic:{ type: Number, default: .9, },
   },
@@ -531,22 +533,33 @@ Vue.component('animated-text', {
 window.app = new Vue({
   el: '#app',
   data:{
-    message: 'Hello Vue!',
-    count: 0,
-    text: '',
-    items: [1,2,3,4],
-  },
-  methods:{
-    shuffle(a) {
-      for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1))
-        var tmp = a[i]
-        Vue.set(a, i, a[j])
-        Vue.set(a, j, tmp)
-      }
-    },
+    title: 'software engineer',
+    business: 'builds stuff',
   },
 })
+
+
+
+// Intermittently, update the description randomly.
+function pick(a) { return a[Math.random() * a.length | 0] }
+setTimeout(function f() {
+  // TODO: More descriptive & concrete things.
+  app.title = pick([
+    'software engineer',
+    'developer',
+    'person',
+  ])
+  setTimeout(f, Math.random() * 20000)
+}, Math.random() * 20000)
+setTimeout(function f() {
+  // TODO: More descriptive & concrete things.
+  app.business = pick([
+    'builds stuff',
+    'delivers code',
+    'creates experiences',
+  ])
+  setTimeout(f, Math.random() * 20000)
+}, Math.random() * 20000)
 })();
 
 /******/ })()
