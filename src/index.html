@@ -35,8 +35,6 @@
         <constraint name=link2></constraint>
       </obj>
       <div class="mt-auto"></div>
-      <!-- TODO: Why does including projects here break vertical margins? -->
-      <!--    Should we put all the prior stuff into a height:100vh element? ...Oh yeah: the world. -->
     </world>
     <projects></projects>
   </span>
@@ -77,7 +75,48 @@
 
   <style>
     /* Styles for projects. */
-    /* TODO */
+    .projects {
+      display: flex;
+      flex-flow: row wrap;
+      align-items: stretch;
+      justify-content: space-evenly;
+    }
+    .project-card {
+      margin: 1em;
+      border-radius: 1em;
+      box-shadow: 0 0 .5em white;
+      width: 20em;
+      height: 15em;
+      overflow: hidden;
+      background-size: cover;
+      position: relative;
+      text-shadow: 0 0 .5em black;
+      display: flex;
+      flex-flow: column nowrap;
+      transition: all .2s;
+      opacity: .6;
+    }
+    .project-card:hover { opacity: 1; }
+    .project-card>img {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 0; right: 0;
+      z-index: -1;
+      max-width: 100%;
+      opacity: .6;
+      /* TODO: Can we make the image moved with the cursor? (Preferably without going out-of-bounds…) */
+    }
+    .project-card>.description {
+      flex: 0 1 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .project-card>:last-child {
+      display: inline-block;
+      margin-top: auto;
+      /* TODO: Can we have a cursor-based radial gradient? */
+    }
   </style>
 
   <style>

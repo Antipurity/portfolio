@@ -450,13 +450,12 @@ Vue.component('project-card', {
   },
   render(h) {
     const p = this.project
-    // TODO: (Style: put the image as the card's background, have a big bold title, a one-line description, and the button.)
     return h(
       'div',
-      { class:'project-card' },
+      { class:'project-card', },
       [
         h(
-          'h1',
+          'h2',
           p.name,
         ),
         p.images[0] ? h(
@@ -465,6 +464,7 @@ Vue.component('project-card', {
         ) : '',
         h(
           'p',
+          { class:'description' },
           p.description.slice(0, p.description.indexOf('\n'))
         ),
         h(
