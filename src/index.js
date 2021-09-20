@@ -61,3 +61,25 @@ setTimeout(function f() {
   ]), app.description = [...app.description]
   setTimeout(f, Math.random() * 20000)
 }, Math.random() * 20000)
+
+
+
+// Keep track of `--x` and `--y` CSS variables.
+function setMousePosition(evt, remove = false) {
+  const elem = evt.target
+  if (elem && !(elem instanceof Element)) elem = elem.parentNode
+  if (!elem || !(elem instanceof Element)) return
+  if (!remove) {
+    const x = evt.offsetX, y = evt.offsetY
+    if (x || y) elem.style.setProperty('--x', x+'px')
+    if (x || y) elem.style.setProperty('--y', y+'px')
+  } else {
+    elem.style.removeProperty('--x')
+    elem.style.removeProperty('--y')
+  }
+}
+addEventListener('mouseover', setMousePosition, {passive:true})
+addEventListener('mousemove', setMousePosition, {passive:true})
+addEventListener('mouseout', evt => {
+  setMousePosition(evt, true)
+}, {passive:true})
