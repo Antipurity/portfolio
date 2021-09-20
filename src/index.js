@@ -19,6 +19,9 @@ Vue.component('animated-text', {
 })
 window.app = new Vue({
   el: '#app',
+  provide:{
+    oncollision: sparksOnCollision,
+  },
   data:{
     description:[
       'A ',
@@ -82,3 +85,17 @@ addEventListener('mousemove', setMousePosition, {passive:true})
 addEventListener('mouseout', evt => {
   setMousePosition(evt, true)
 }, {passive:true})
+
+
+
+// On collision, make sparks.
+function sparksOnCollision(world, x, y) {
+  const el = document.createElement('div')
+  el.textContent = 'CLANG' // TODO
+  el.style.position = 'absolute', el.style.left = x+'px', el.style.top = y+'px'
+  world.$el.append(el)
+  setTimeout(() => el.remove(), 1000)
+  // TODO: Try creating a temporary element at the computed coordinates. ...Or just inside `world.$el`, at `x`/`y`, since the world is position:relative anyway?
+  //   Works perfectly.
+  // TODO: Style the spark.
+}

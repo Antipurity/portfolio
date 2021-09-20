@@ -9,15 +9,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.17.1/matter.js"></script>
 </head>
 <body class="h-100 text-center text-white bg-dark">
-  <span id="app" class="cover-container mx-auto w-100 h-100 p-3 mx-auto flex-column">
+  <span id="app" class="cover-container mx-auto w-100 h-100 mx-auto flex-column">
     <world _class="wholeWidth oneScreen d-flex flex-column justify-content-center align-items-center">
-      <header class="mb-auto align-self-end" style="margin-right:1rem">
+      <header class="mb-auto align-self-end" style="margin-right:1rem; margin-top:1rem">
         <nav class="nav fw-bold">
           <a href="#" class="nav-link active">Home</a>
           <a href="#projects" class="nav-link">Projects</a>
         </nav>
       </header>
-      <p class="lead">
+      <p class="lead" style="user-select:none">
         <constraint name=link2></constraint>
         <constraint name=link4></constraint>
         <obj>
@@ -36,6 +36,7 @@
       </obj>
       <div class="mt-auto"></div>
     </world>
+    <!-- TODO: ...In matter.js, is it possible to detect object collisions and create sparks on them? YEP: `Matter.Events.on(engine, 'collisionStart', f({pairs}))`. -->
     <projects></projects>
   </span>
 
@@ -80,9 +81,11 @@
       flex-flow: row wrap;
       align-items: stretch;
       justify-content: space-evenly;
+      overflow: hidden;
+      padding: 1em;
     }
     .project-card {
-      margin: 1em;
+      margin: 0 1em 1em 0;
       border-radius: 1em;
       box-shadow: 0 0 .5em white;
       width: 20em;
@@ -93,8 +96,9 @@
       text-shadow: 0 0 .5em black;
       display: flex;
       flex-flow: column nowrap;
-      transition: all .2s;
+      transition: opacity .2s;
       opacity: .6;
+      user-select: none;
     }
     .project-card:hover { opacity: 1; }
     .project-card>img {
@@ -104,7 +108,7 @@
       z-index: -1;
       max-width: 100%;
       opacity: .6;
-      /* TODO: Can we make the image moved with the cursor? (Preferably without going out-of-bounds…) */
+      pointer-events: none;
     }
     .project-card>.description {
       flex: 0 1 100%;
@@ -113,9 +117,12 @@
       justify-content: center;
     }
     .project-card>:last-child {
+      border: none;
       display: inline-block;
       margin-top: auto;
-      /* TODO: Can we have a cursor-based radial gradient? */
+      transition: all 2s;
+      background: radial-gradient(circle at var(--x,-4em) var(--y,-4em), white, #87b7fe 1em, #5092fe 2em, #0d6efd 4em);
+      /* Parents give --x/--y to children, but, that might as well be a feature, not a bug. */
     }
   </style>
 

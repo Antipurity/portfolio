@@ -100,6 +100,7 @@ Vue.component('world', {
     bounded:{ type: Boolean, default: true },
     allowDragging:{ type: Boolean, default: true },
   },
+  inject:['oncollision'],
   render(h) {
     this.engine.gravity.x = this.gravityX
     this.engine.gravity.y = this.gravityY
@@ -225,6 +226,16 @@ Vue.component('world', {
       this.worldViews.forEach(_updatePhysObject) // TODO: Why does this result in position mismatch?
     })
     this.resizeObs.observe(this.$el)
+    if (this.collisionHandler)
+      Matter.Events.off(this.engine, 'collisionStart', this.collisionHandler), this.collisionHandler = null
+    if (this.oncollision)
+      Matter.Events.on(this.engine, 'collisionStart', this.collisionHandler = evt => {
+        for (let i = 0; i < evt.pairs.length; ++i) {
+          const ac = evt.pairs[i].activeContacts
+          for (let j = 0; j < ac.length; ++j)
+            this.oncollision(this, ac[j].vertex.x, ac[j].vertex.y)
+        }
+      })
   },
   beforeDestroy() {
     this.resizeObs.unobserve(this.$el)
@@ -451,11 +462,12 @@ Vue.component('project-card', {
   render(h) {
     const p = this.project
     return h(
-      'div',
-      { class:'project-card', },
+      'obj',
+      { props:{ _class:'project-card' } },
       [
         h(
           'h2',
+          { class:'name' },
           p.name,
         ),
         p.images[0] ? h(
@@ -465,13 +477,15 @@ Vue.component('project-card', {
         h(
           'p',
           { class:'description' },
-          p.description.slice(0, p.description.indexOf('\n'))
+          p.description.split('\n')[0]
         ),
         h(
           'button',
           { class:'btn btn-primary btn-lg fw-bold' },
           'Learn more →',
-          // TODO: (We probably want to expand the card into a full description, inline, smoothly... Yeah, that sounds appealing visually.)
+          // TODO: Make this button, on click, open the project in <projects>'s thing.
+          // TODO: Have `project-info.js`.
+          //   p.name, …p.urls, …p.images, p.description.
           //   (p.description should be parsed as Markdown.)
           //   (p.urls[0] should be in an <iframe> and a link; the rest in links.)
         ),
@@ -563,10 +577,9 @@ __webpack_require__.r(__webpack_exports__);
 Vue.component('projects', {
   render(h) {
     const ps = _project_info_js__WEBPACK_IMPORTED_MODULE_1__.projects
-    // TODO: Style: put them all in a flexbox, like an album.
     return h(
-      'div',
-      { class:'projects' },
+      'world',
+      { props:{ _class:'projects' } },
       ps.map(p => h('project-card', { props:{ project:p, expanded:false } }))
     )
   },
@@ -676,6 +689,9 @@ Vue.component('animated-text', {
 })
 window.app = new Vue({
   el: '#app',
+  provide:{
+    oncollision: sparksOnCollision,
+  },
   data:{
     description:[
       'A ',
@@ -739,6 +755,20 @@ addEventListener('mousemove', setMousePosition, {passive:true})
 addEventListener('mouseout', evt => {
   setMousePosition(evt, true)
 }, {passive:true})
+
+
+
+// On collision, make sparks.
+function sparksOnCollision(world, x, y) {
+  const el = document.createElement('div')
+  el.textContent = 'CLANG' // TODO
+  el.style.position = 'absolute', el.style.left = x+'px', el.style.top = y+'px'
+  world.$el.append(el)
+  setTimeout(() => el.remove(), 1000)
+  // TODO: Try creating a temporary element at the computed coordinates. ...Or just inside `world.$el`, at `x`/`y`, since the world is position:relative anyway?
+  //   Works perfectly.
+  // TODO: Style the spark.
+}
 })();
 
 /******/ })()

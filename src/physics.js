@@ -9,6 +9,7 @@ Vue.component('world', {
     bounded:{ type: Boolean, default: true },
     allowDragging:{ type: Boolean, default: true },
   },
+  inject:['oncollision'],
   render(h) {
     this.engine.gravity.x = this.gravityX
     this.engine.gravity.y = this.gravityY
@@ -134,6 +135,16 @@ Vue.component('world', {
       this.worldViews.forEach(_updatePhysObject) // TODO: Why does this result in position mismatch?
     })
     this.resizeObs.observe(this.$el)
+    if (this.collisionHandler)
+      Matter.Events.off(this.engine, 'collisionStart', this.collisionHandler), this.collisionHandler = null
+    if (this.oncollision)
+      Matter.Events.on(this.engine, 'collisionStart', this.collisionHandler = evt => {
+        for (let i = 0; i < evt.pairs.length; ++i) {
+          const ac = evt.pairs[i].activeContacts
+          for (let j = 0; j < ac.length; ++j)
+            this.oncollision(this, ac[j].vertex.x, ac[j].vertex.y)
+        }
+      })
   },
   beforeDestroy() {
     this.resizeObs.unobserve(this.$el)
