@@ -165,6 +165,7 @@ Vue.component('world', {
     function trackTransitions() {
       const mult = 1e-3
       for (let [el, last] of trackedElems) {
+        if (!el.parentNode) { trackedElems.delete(el);  continue }
         const rect = el.getBoundingClientRect(), pRect = el.parentNode.getBoundingClientRect()
         const x = rect.x - pRect.x + rect.width/2
         const y = rect.y - pRect.y + rect.height/2
@@ -180,7 +181,7 @@ Vue.component('world', {
     }
     this.$el.ontransitionstart = evt => {
       const el = evt.target
-      if (evt.propertyName !== 'transform' || !(el instanceof Element)) return
+      if (evt.propertyName !== 'transform' || !el || !(el instanceof Element)) return
       if (trackedElems.has(el)) return
       const obj = _getObjAtElem(el)
       if (!obj) return
@@ -367,13 +368,14 @@ Vue.component('constraint', {
   async mounted() {
     if (this.constraint) return
     this.$el._vueConstraint = this
-    await new Promise(requestAnimationFrame)
-    await new Promise(requestAnimationFrame)
     const con = this.world.unboundConstraints
-    this.inBody = _getObjAtElem(this.$el)
     if (con[this.name]) {
       const that = con[this.name];  delete con[this.name]
       this.other = that, that.other = this
+      await new Promise(requestAnimationFrame)
+      await new Promise(requestAnimationFrame)
+      this.inBody = _getObjAtElem(this.$el)
+      that.inBody = _getObjAtElem(that.$el)
       this.constraint = that.constraint = Matter.Constraint.create({
         bodyA: this.inBody ? this.inBody.body : undefined,
         bodyB: that.inBody ? that.inBody.body : undefined,
@@ -430,6 +432,64 @@ function _getElemOffset(from, to) {
   const y = r2.y - r1.y + (r2.height - r1.height) / 2
   return { x, y }
 }
+
+/***/ }),
+
+/***/ "./project-info.js":
+/*!*************************!*\
+  !*** ./project-info.js ***!
+  \*************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "projects": () => (/* binding */ projects)
+/* harmony export */ });
+let projects = JSON.parse(`[
+  {
+    "name":"Image Modifier Project",
+    "urls":[
+      "https://image-modifier-project.herokuapp.com/",
+      "https://github.com/Antipurity/image-modifier-project"
+    ],
+    "images":[
+      "TODO: Copy the one image from project's directory."
+    ],
+    "description":"TODO"
+  },
+  {
+    "name":"2048",
+    "urls":[
+      "TODO: What, do we put a relative URL here, like \`/dist/2048.html\`?"
+    ],
+    "images":[
+      "TODO"
+    ],
+    "description":"TODO"
+  },
+  {
+    "name":"WebEnv",
+    "urls":[
+      "https://github.com/Antipurity/webenv"
+    ],
+    "images":[
+      "TODO"
+    ],
+    "description":"TODO"
+  },
+  {
+    "name":"Conceptual",
+    "urls":[
+      "https://antipurity.github.io/conceptual",
+      "https://github.com/antipurity/conceptual"
+    ],
+    "images":[
+      "TODO: Open it (https://Antipurity.github.io/conceptual), and make some screenshots. And put them here, or, uh, somewhere in images."
+    ],
+    "description":"TODO: How do we describe it, in Markdown format?"
+  }
+]`)
 
 /***/ })
 
@@ -513,8 +573,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _physics_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_physics_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _canvas_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./canvas.js */ "./canvas.js");
 /* harmony import */ var _canvas_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_canvas_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _project_info_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./project-info.js */ "./project-info.js");
 
 
+
+
+console.log(_project_info_js__WEBPACK_IMPORTED_MODULE_2__.projects) // TODO
 
 
 Vue.component('block', {
@@ -533,8 +597,13 @@ Vue.component('animated-text', {
 window.app = new Vue({
   el: '#app',
   data:{
-    title: 'software engineer',
-    business: 'builds stuff',
+    description:[
+      'A ',
+      'software engineer',
+      ' that ',
+      'builds stuff',
+      '.',
+    ],
   },
 })
 
@@ -544,20 +613,28 @@ window.app = new Vue({
 function pick(a) { return a[Math.random() * a.length | 0] }
 setTimeout(function f() {
   // TODO: More descriptive & concrete things.
-  app.title = pick([
+  app.description[1] = pick([
     'software engineer',
     'developer',
     'person',
-  ])
+  ]), app.description = [...app.description]
   setTimeout(f, Math.random() * 20000)
 }, Math.random() * 20000)
 setTimeout(function f() {
+  app.description[2] = pick([
+    ' that ',
+    ' who ',
+    ' which ',
+  ]), app.description = [...app.description]
+  setTimeout(f, Math.random() * 40000)
+}, Math.random() * 40000)
+setTimeout(function f() {
   // TODO: More descriptive & concrete things.
-  app.business = pick([
+  app.description[3] = pick([
     'builds stuff',
     'delivers code',
     'creates experiences',
-  ])
+  ]), app.description = [...app.description]
   setTimeout(f, Math.random() * 20000)
 }, Math.random() * 20000)
 })();

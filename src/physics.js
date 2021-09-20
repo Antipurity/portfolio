@@ -74,6 +74,7 @@ Vue.component('world', {
     function trackTransitions() {
       const mult = 1e-3
       for (let [el, last] of trackedElems) {
+        if (!el.parentNode) { trackedElems.delete(el);  continue }
         const rect = el.getBoundingClientRect(), pRect = el.parentNode.getBoundingClientRect()
         const x = rect.x - pRect.x + rect.width/2
         const y = rect.y - pRect.y + rect.height/2
@@ -89,7 +90,7 @@ Vue.component('world', {
     }
     this.$el.ontransitionstart = evt => {
       const el = evt.target
-      if (evt.propertyName !== 'transform' || !(el instanceof Element)) return
+      if (evt.propertyName !== 'transform' || !el || !(el instanceof Element)) return
       if (trackedElems.has(el)) return
       const obj = _getObjAtElem(el)
       if (!obj) return
@@ -276,13 +277,14 @@ Vue.component('constraint', {
   async mounted() {
     if (this.constraint) return
     this.$el._vueConstraint = this
-    await new Promise(requestAnimationFrame)
-    await new Promise(requestAnimationFrame)
     const con = this.world.unboundConstraints
-    this.inBody = _getObjAtElem(this.$el)
     if (con[this.name]) {
       const that = con[this.name];  delete con[this.name]
       this.other = that, that.other = this
+      await new Promise(requestAnimationFrame)
+      await new Promise(requestAnimationFrame)
+      this.inBody = _getObjAtElem(this.$el)
+      that.inBody = _getObjAtElem(that.$el)
       this.constraint = that.constraint = Matter.Constraint.create({
         bodyA: this.inBody ? this.inBody.body : undefined,
         bodyB: that.inBody ? that.inBody.body : undefined,
