@@ -30,7 +30,7 @@ Vue.component('project-card', {
           { class:'btn btn-primary btn-lg fw-bold' },
           'Learn more →',
           // TODO: Make this button, on click, open the project in <projects>'s thing.
-          // TODO: Have `project-info.js`.
+          // TODO: Have `project-info.js`. ...Wait, we already do; it stores the info. What's the untaken name? `project-expanded.js`?
           //   p.name, …p.urls, …p.images, p.description.
           //   (p.description should be parsed as Markdown.)
           //   (p.urls[0] should be in an <iframe> and a link; the rest in links.)

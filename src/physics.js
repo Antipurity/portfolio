@@ -132,7 +132,7 @@ Vue.component('world', {
     // On resize, update the bounding boxes of all objects.
     this.resizeObs = new ResizeObserver(() => {
       _updateWorldBounds(this, this.bounded)
-      this.worldViews.forEach(_updatePhysObject) // TODO: Why does this result in position mismatch?
+      this.worldViews.forEach(_updatePhysObject) // TODO: Why does this result in position mismatch? (Eh, unfixed bug, who cares.)
     })
     this.resizeObs.observe(this.$el)
     if (this.collisionHandler)

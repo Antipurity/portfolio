@@ -129,13 +129,16 @@
       align-items: center;
       justify-content: center;
     }
-    .project-card>:last-child {
+    .project-card>button {
       border: none;
       display: inline-block;
       margin-top: auto;
       transition: all 2s;
       background: radial-gradient(circle at var(--x,-4em) var(--y,-4em), white, #87b7fe 1em, #5092fe 2em, #0d6efd 4em);
-      /* Parents give --x/--y to children, but, that might as well be a feature, not a bug. */
+      /* Parents give --x/--y to children too, but, that might as well be a feature, not a bug. */
+    }
+    .project-card>button:active {
+      background: radial-gradient(circle at var(--x,-4em) var(--y,-4em), white, #9ecfff 1em, #6eb6ff 2em, #3d9eff 4em);
     }
   </style>
 

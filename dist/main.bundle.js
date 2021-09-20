@@ -223,7 +223,7 @@ Vue.component('world', {
     // On resize, update the bounding boxes of all objects.
     this.resizeObs = new ResizeObserver(() => {
       _updateWorldBounds(this, this.bounded)
-      this.worldViews.forEach(_updatePhysObject) // TODO: Why does this result in position mismatch?
+      this.worldViews.forEach(_updatePhysObject) // TODO: Why does this result in position mismatch? (Eh, unfixed bug, who cares.)
     })
     this.resizeObs.observe(this.$el)
     if (this.collisionHandler)
@@ -485,7 +485,7 @@ Vue.component('project-card', {
           { class:'btn btn-primary btn-lg fw-bold' },
           'Learn more →',
           // TODO: Make this button, on click, open the project in <projects>'s thing.
-          // TODO: Have `project-info.js`.
+          // TODO: Have `project-info.js`. ...Wait, we already do; it stores the info. What's the untaken name? `project-expanded.js`?
           //   p.name, …p.urls, …p.images, p.description.
           //   (p.description should be parsed as Markdown.)
           //   (p.urls[0] should be in an <iframe> and a link; the rest in links.)
@@ -766,12 +766,12 @@ function sparksOnCollision(world, x, y, linImpulse, angImpulse) {
     const el = document.createElement('div')
     el.className = 'spark'
     el.style.left = x+'px', el.style.top = y+'px'
-    el.style.transform = `scale(1) translate(0,0) rotate(0deg) translate(0,0)`
+    const s = (.5+Math.random()*8) * Math.random() * Math.random()
+    el.style.transform = `translate(0,0) rotate(0deg) translate(0,0) scale(${s})`
     el.style.opacity = 1
     world.$el.append(el)
     setTimeout(() => {
-      const s = (.5+Math.random()*32) * Math.random() * Math.random()
-      el.style.transform = `translate(${f()}px,${f()}px) rotate(${r(360)}deg) translate(${f()}px,${f()}px) scale(${s})`
+      el.style.transform = `translate(${f()}px,${f()}px) rotate(${r(721)-360}deg) translate(${f()}px,${f()}px) scale(${s})`
       el.style.opacity = 0
     }, 0)
     setTimeout(() => el.remove(), 1000)
