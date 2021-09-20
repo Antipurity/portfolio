@@ -1,8 +1,7 @@
 import './physics.js'
 import './canvas.js'
+import './projects.js'
 
-import { projects } from './project-info.js'
-console.log(projects) // TODO
 
 
 Vue.component('block', {

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset=utf-8>
   <title>Alexander Fedorov</title>
   <!-- TODO: Name the portfolio properly, like, "… | Developer"... Sucky title... Do we really need a title? -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
@@ -34,15 +35,10 @@
         <constraint name=link2></constraint>
       </obj>
       <div class="mt-auto"></div>
+      <!-- TODO: Why does including projects here break vertical margins? -->
+      <!--    Should we put all the prior stuff into a height:100vh element? ...Oh yeah: the world. -->
     </world>
-
-    <!-- TODO: Also, want projects here, right? -->
-    <!-- A card for each, linking to the more involved description... How do we create those? -->
-    <!--    (Maybe CSS-only cards could be good. ...Maybe Vue's single-file components?) -->
-    <!-- TODO: How do we describe image-modifier-project? -->
-    <!--    First of all, is our data format { name:'…', urls:[…], images:[…], description:'…' }? (Markdown description?) I think so, yeah… -->
-
-    <!-- TODO: Look at others' projects' tab data format. Among opened tabs. -->
+    <projects></projects>
   </span>
 
   <style>
@@ -77,6 +73,11 @@
       background-color: transparent;
       display: inline-block;
     }
+  </style>
+
+  <style>
+    /* Styles for projects. */
+    /* TODO */
   </style>
 
   <style>
