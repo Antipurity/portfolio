@@ -140,9 +140,10 @@ Vue.component('world', {
     if (this.oncollision)
       Matter.Events.on(this.engine, 'collisionStart', this.collisionHandler = evt => {
         for (let i = 0; i < evt.pairs.length; ++i) {
+          // All this internal structure in Matter.js must be bad for performance, via GC pauses.
           const ac = evt.pairs[i].activeContacts
           for (let j = 0; j < ac.length; ++j)
-            this.oncollision(this, ac[j].vertex.x, ac[j].vertex.y)
+            this.oncollision(this, ac[j].vertex.x, ac[j].vertex.y, ac[j].normalImpulse, ac[j].tangentImpulse)
         }
       })
   },

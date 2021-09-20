@@ -89,13 +89,25 @@ addEventListener('mouseout', evt => {
 
 
 // On collision, make sparks.
-function sparksOnCollision(world, x, y) {
-  const el = document.createElement('div')
-  el.textContent = 'CLANG' // TODO
-  el.style.position = 'absolute', el.style.left = x+'px', el.style.top = y+'px'
-  world.$el.append(el)
-  setTimeout(() => el.remove(), 1000)
-  // TODO: Try creating a temporary element at the computed coordinates. ...Or just inside `world.$el`, at `x`/`y`, since the world is position:relative anyway?
-  //   Works perfectly.
-  // TODO: Style the spark.
+function sparksOnCollision(world, x, y, linImpulse, angImpulse) {
+  const n = ((Math.abs(linImpulse) + Math.abs(angImpulse)) / 10000 + Math.random()*1.1) | 0
+  for (let spark = 0; spark < n; ++spark) {
+    const el = document.createElement('div')
+    el.className = 'spark'
+    el.style.left = x+'px', el.style.top = y+'px'
+    el.style.transform = `scale(1) translate(0,0) rotate(0deg) translate(0,0)`
+    el.style.opacity = 1
+    world.$el.append(el)
+    setTimeout(() => {
+      const s = (.5+Math.random()*32) * Math.random() * Math.random()
+      el.style.transform = `translate(${f()}px,${f()}px) rotate(${r(360)}deg) translate(${f()}px,${f()}px) scale(${s})`
+      el.style.opacity = 0
+    }, 0)
+    setTimeout(() => el.remove(), 1000)
+  }
+  function f() {
+    const s = (.5+Math.random()*32) * Math.random() * Math.random()
+    return (r(1001)-500) / Math.sqrt(s)
+  }
+  function r(n) { return Math.random()*n | 0 }
 }

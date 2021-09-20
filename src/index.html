@@ -36,7 +36,6 @@
       </obj>
       <div class="mt-auto"></div>
     </world>
-    <!-- TODO: ...In matter.js, is it possible to detect object collisions and create sparks on them? YEP: `Matter.Events.on(engine, 'collisionStart', f({pairs}))`. -->
     <projects></projects>
   </span>
 
@@ -67,10 +66,24 @@
       display: block;
       width: 100%;
     }
+    .block {
+      display: inline-block;
+      white-space: pre-wrap;
+    }
     .dot {
       width: 100px; height: 1px;
       background-color: transparent;
       display: inline-block;
+    }
+
+    .spark {
+      pointer-events: none;
+      position: absolute;
+      width: .1em; height: .1em;
+      border-radius: 50%;
+      box-shadow: 0 0 .4em .2em #ff6634;
+      background-color: #ffff66;
+      transition: transform 2s linear, opacity 1s;
     }
   </style>
 
@@ -127,10 +140,6 @@
   </style>
 
   <style>
-    .block {
-      display: inline-block;
-      white-space: pre-wrap;
-    }
     .fade-enter-active, .fade-leave-active, .fade-move {
       transition: opacity .2s, transform .2s;
     }
