@@ -560,7 +560,6 @@ Vue.component('project-description', {
             'img',
             { attrs: { src:`assets/img/${im}` } },
             // TODO: Make a carousel of images, not a list.
-            //   ...Wait, if a carousel is just a sequence of images with a thingy to select the currently-centered one, then can't we make our own, small, component?
             //   ...Bootstrap has a carousel.
           )),
         ),
