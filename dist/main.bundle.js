@@ -227,18 +227,27 @@ Vue.component('world', {
     })
     this.resizeObs.observe(this.$el)
     if (this.collisionHandler)
-      Matter.Events.off(this.engine, 'collisionStart', this.collisionHandler), this.collisionHandler = null
+      Matter.Events.off(this.engine, 'collisionActive', this.collisionHandler), this.collisionHandler = null
     if (this.oncollision)
-      Matter.Events.on(this.engine, 'collisionStart', this.collisionHandler = evt => {
+      Matter.Events.on(this.engine, 'collisionActive', this.collisionHandler = evt => {
         for (let i = 0; i < evt.pairs.length; ++i) {
           // All this internal structure in Matter.js must be bad for performance, via GC pauses.
-          const ac = evt.pairs[i].activeContacts
+          // Here, we call `this.oncollision` with 1 point, somewhere in the collided area.
+          const c = evt.pairs[i].collision, ac = evt.pairs[i].activeContacts
+          let ws = [], wSum = 0
           for (let j = 0; j < ac.length; ++j)
-            this.oncollision(this, ac[j].vertex.x, ac[j].vertex.y, ac[j].normalImpulse, ac[j].tangentImpulse)
+            wSum += ws[j] = Math.random()
+          let x = 0, y = 0
+          for (let j = 0; j < ac.length; ++j)
+            x += ac[j].vertex.x * (ws[j] / wSum),
+            y += ac[j].vertex.y * (ws[j] / wSum)
+          this.oncollision(this, x, y, c.depth)
         }
       })
   },
   beforeDestroy() {
+    if (this.collisionHandler)
+      Matter.Events.off(this.engine, 'collisionActive', this.collisionHandler), this.collisionHandler = null
     this.resizeObs.unobserve(this.$el)
     Matter.Events.off(this.runner, 'afterUpdate', this.updateViews)
     Matter.Runner.stop(this.runner)
@@ -459,7 +468,6 @@ function _getElemOffset(from, to) {
 Vue.component('project-card', {
   props:{
     project: Object,
-    expanded: Boolean,
   },
   render(h) {
     const p = this.project
@@ -483,13 +491,82 @@ Vue.component('project-card', {
         ),
         h(
           'button',
-          { class:'btn btn-primary btn-lg fw-bold' },
+          {
+            on:{ click: () => this.$emit('viewproject', this.project) },
+            class:'btn btn-primary btn-lg fw-bold',
+          },
           'Learn more →',
-          // TODO: Make `projects.js` have a <project-description> at the front, modified on-demand.
-          //   (Also, make it transition its height properly on change.)
-          // TODO: Make this button, on click, open the project in <projects>'s thing.
         ),
       ],
+    )
+  },
+})
+
+/***/ }),
+
+/***/ "./project-description.js":
+/*!********************************!*\
+  !*** ./project-description.js ***!
+  \********************************/
+/***/ (() => {
+
+// A full description of a project.
+Vue.component('project-description', {
+  props:{
+    project:{ type:Object, default:null },
+  },
+  render(h) {
+    const p = this.project
+    if (!p) return
+    return h(
+      'div',
+      { class:'project-description' },
+      [
+        h( // Name.
+          'h2',
+          { class:'name' },
+          p.name,
+        ),
+        h( // The first link, to spare a click.
+          'iframe',
+          { attrs:{ src:p.urls[0] } },
+        ),
+        h( // Links.
+          'div',
+          p.urls.map(u => h('div', [
+            h('a', { class:'link-info', attrs:{ href:u } }, u)
+          ])),
+        ),
+        typeof marked == 'function' ? h( // Description.
+          'p',
+          {
+            domProps:{ innerHTML: marked.parseInline(p.description) },
+            class:'description',
+          },
+        ) : h(
+          'p',
+          { class:'description' },
+          p.description,
+        ),
+        h( // Images.
+          'div',
+          p.images.map(im => h(
+            'img',
+            { attrs: { src:`assets/img/${im}` } },
+            // TODO: Make a carousel of images, not a list.
+            //   ...Wait, if a carousel is just a sequence of images with a thingy to select the currently-centered one, then can't we make our own, small, component?
+            //   ...Bootstrap has a carousel.
+          )),
+        ),
+        h( // Hide.
+          'button',
+          {
+            on:{ click: () => this.$emit('viewproject', null) },
+            class:'btn btn-primary btn-lg fw-bold',
+          },
+          'Learn less ←',
+        ),
+      ]
     )
   },
 })
@@ -517,12 +594,12 @@ let projects = JSON.parse(`[
     "images":[
       "pristine-white-canvas.png"
     ],
-    "description":"A platform for collaborative editing of a single image, pixel by pixel.\\n\\nUtilizes Julia, PostgreSQL, Docker, and JavaScript to deliver an intuitive and cohesive experience.)"
+    "description":"A platform for collaborative editing of a single image, pixel by pixel.\\n\\nUtilizes Julia, PostgreSQL, Docker, and JavaScript to deliver an intuitive and cohesive experience. Of editing one image.\\n\\n(The version deployed on Heroku often fails to start, because Julia is a poor choice for web servers, and [takes up too much RAM](https://discourse.julialang.org/t/large-idle-memory-usage/20368/5).)"
   },
   {
     "name":"2048",
     "urls":[
-      "TODO: What, do we put a relative URL here, like \`/dist/2048.html\`?"
+      "/dist/2048.html"
     ],
     "images":[
       null,
@@ -567,20 +644,47 @@ let projects = JSON.parse(`[
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _project_card_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./project-card.js */ "./project-card.js");
 /* harmony import */ var _project_card_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_project_card_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _project_info_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./project-info.js */ "./project-info.js");
+/* harmony import */ var _project_description_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./project-description.js */ "./project-description.js");
+/* harmony import */ var _project_description_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_project_description_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _project_info_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./project-info.js */ "./project-info.js");
 // A component for all projects.
 
 
 
 
 
+
 Vue.component('projects', {
+  props:{
+    project:{ type:Object, default:null },
+  },
+  data() {
+    return { viewedProject: this.project }
+  },
   render(h) {
-    const ps = _project_info_js__WEBPACK_IMPORTED_MODULE_1__.projects
+    const ps = _project_info_js__WEBPACK_IMPORTED_MODULE_2__.projects
+    const pChange = project => {
+      this.viewedProject = project
+      this.$el.scrollIntoView(true)
+    }
     return h(
-      'world',
-      { props:{ _class:'projects' } },
-      ps.map(p => h('project-card', { props:{ project:p, expanded:false } }))
+      'p',
+      { domProps:{ id:'projects' } },
+      [
+        h(
+          'project-description',
+          {
+            on:{ viewproject:pChange },
+            props:{ project: this.viewedProject },
+          },
+          // TODO: Make this transition properly/fancily.
+        ),
+        h(
+          'world',
+          { props:{ _class:'projects' } },
+          ps.map(p => h('project-card', { props:{ project:p, expanded:false }, on:{viewproject:pChange} }))
+        ),
+      ]
     )
   },
 })
@@ -759,8 +863,8 @@ addEventListener('mouseout', evt => {
 
 
 // On collision, make sparks.
-function sparksOnCollision(world, x, y, linImpulse, angImpulse) {
-  const n = ((Math.abs(linImpulse) + Math.abs(angImpulse)) / 10000 + Math.random()*1.1) | 0
+function sparksOnCollision(world, x, y, depth) {
+  const n = Math.min(3, Math.abs(depth) * Math.random()) | 0
   for (let spark = 0; spark < n; ++spark) {
     const el = document.createElement('div')
     el.className = 'spark'

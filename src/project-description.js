@@ -6,48 +6,55 @@ Vue.component('project-description', {
   render(h) {
     const p = this.project
     if (!p) return
-    // TODO: Use this in <projects>.
-    //   How to plumb the "change the viewed project" business?
-    // TODO: Style this. (How?)
     return h(
       'div',
       { class:'project-description' },
-      h(
-        'h2',
-        { class:'name' },
-        p.name,
-      ),
-      typeof marked == 'function' ? h(
-        'p',
-        {
-          domProps:{ innerHTML: marked.parseInline(p.description) },
-          class:'description',
-        },
-      )
-      : h(
-        'p',
-        { class:'description' },
-        p.description,
-      ),
-      h(
-        'ul',
-        p.urls.map(u => h('a', { attrs:{ href:u } })),
-        // TODO: Also use the first URL in an <iframe>.
-      ),
-      h(
-        'div',
-        p.images.map(im => h(
-          'img',
-          { attrs: { src:`assets/img/${im}` } },
-          // TODO: Make a carousel of images instead.
-        )),
-      ),
-      h(
-        'button',
-        { class:'btn btn-primary btn-lg fw-bold' },
-        'Learn less ←',
-        // TODO: Make this, when pressed, set our .project to null.
-      ),
+      [
+        h( // Name.
+          'h2',
+          { class:'name' },
+          p.name,
+        ),
+        h( // The first link, to spare a click.
+          'iframe',
+          { attrs:{ src:p.urls[0] } },
+        ),
+        h( // Links.
+          'div',
+          p.urls.map(u => h('div', [
+            h('a', { class:'link-info', attrs:{ href:u } }, u)
+          ])),
+        ),
+        typeof marked == 'function' ? h( // Description.
+          'p',
+          {
+            domProps:{ innerHTML: marked.parseInline(p.description) },
+            class:'description',
+          },
+        ) : h(
+          'p',
+          { class:'description' },
+          p.description,
+        ),
+        h( // Images.
+          'div',
+          p.images.map(im => h(
+            'img',
+            { attrs: { src:`assets/img/${im}` } },
+            // TODO: Make a carousel of images, not a list.
+            //   ...Wait, if a carousel is just a sequence of images with a thingy to select the currently-centered one, then can't we make our own, small, component?
+            //   ...Bootstrap has a carousel.
+          )),
+        ),
+        h( // Hide.
+          'button',
+          {
+            on:{ click: () => this.$emit('viewproject', null) },
+            class:'btn btn-primary btn-lg fw-bold',
+          },
+          'Learn less ←',
+        ),
+      ]
     )
   },
 })

@@ -8,12 +8,12 @@ export let projects = JSON.parse(`[
     "images":[
       "pristine-white-canvas.png"
     ],
-    "description":"A platform for collaborative editing of a single image, pixel by pixel.\\n\\nUtilizes Julia, PostgreSQL, Docker, and JavaScript to deliver an intuitive and cohesive experience.)"
+    "description":"A platform for collaborative editing of a single image, pixel by pixel.\\n\\nUtilizes Julia, PostgreSQL, Docker, and JavaScript to deliver an intuitive and cohesive experience. Of editing one image.\\n\\n(The version deployed on Heroku often fails to start, because Julia is a poor choice for web servers, and [takes up too much RAM](https://discourse.julialang.org/t/large-idle-memory-usage/20368/5).)"
   },
   {
     "name":"2048",
     "urls":[
-      "TODO: What, do we put a relative URL here, like \`/dist/2048.html\`?"
+      "/dist/2048.html"
     ],
     "images":[
       null,

@@ -4,7 +4,6 @@
 Vue.component('project-card', {
   props:{
     project: Object,
-    expanded: Boolean,
   },
   render(h) {
     const p = this.project
@@ -28,11 +27,11 @@ Vue.component('project-card', {
         ),
         h(
           'button',
-          { class:'btn btn-primary btn-lg fw-bold' },
+          {
+            on:{ click: () => this.$emit('viewproject', this.project) },
+            class:'btn btn-primary btn-lg fw-bold',
+          },
           'Learn more →',
-          // TODO: Make `projects.js` have a <project-description> at the front, modified on-demand.
-          //   (Also, make it transition its height properly on change.)
-          // TODO: Make this button, on click, open the project in <projects>'s thing.
         ),
       ],
     )

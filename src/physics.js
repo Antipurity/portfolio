@@ -136,18 +136,27 @@ Vue.component('world', {
     })
     this.resizeObs.observe(this.$el)
     if (this.collisionHandler)
-      Matter.Events.off(this.engine, 'collisionStart', this.collisionHandler), this.collisionHandler = null
+      Matter.Events.off(this.engine, 'collisionActive', this.collisionHandler), this.collisionHandler = null
     if (this.oncollision)
-      Matter.Events.on(this.engine, 'collisionStart', this.collisionHandler = evt => {
+      Matter.Events.on(this.engine, 'collisionActive', this.collisionHandler = evt => {
         for (let i = 0; i < evt.pairs.length; ++i) {
           // All this internal structure in Matter.js must be bad for performance, via GC pauses.
-          const ac = evt.pairs[i].activeContacts
+          // Here, we call `this.oncollision` with 1 point, somewhere in the collided area.
+          const c = evt.pairs[i].collision, ac = evt.pairs[i].activeContacts
+          let ws = [], wSum = 0
           for (let j = 0; j < ac.length; ++j)
-            this.oncollision(this, ac[j].vertex.x, ac[j].vertex.y, ac[j].normalImpulse, ac[j].tangentImpulse)
+            wSum += ws[j] = Math.random()
+          let x = 0, y = 0
+          for (let j = 0; j < ac.length; ++j)
+            x += ac[j].vertex.x * (ws[j] / wSum),
+            y += ac[j].vertex.y * (ws[j] / wSum)
+          this.oncollision(this, x, y, c.depth)
         }
       })
   },
   beforeDestroy() {
+    if (this.collisionHandler)
+      Matter.Events.off(this.engine, 'collisionActive', this.collisionHandler), this.collisionHandler = null
     this.resizeObs.unobserve(this.$el)
     Matter.Events.off(this.runner, 'afterUpdate', this.updateViews)
     Matter.Runner.stop(this.runner)

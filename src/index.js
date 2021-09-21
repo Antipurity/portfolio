@@ -89,8 +89,8 @@ addEventListener('mouseout', evt => {
 
 
 // On collision, make sparks.
-function sparksOnCollision(world, x, y, linImpulse, angImpulse) {
-  const n = ((Math.abs(linImpulse) + Math.abs(angImpulse)) / 10000 + Math.random()*1.1) | 0
+function sparksOnCollision(world, x, y, depth) {
+  const n = Math.min(3, Math.abs(depth) * Math.random()) | 0
   for (let spark = 0; spark < n; ++spark) {
     const el = document.createElement('div')
     el.className = 'spark'
