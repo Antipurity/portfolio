@@ -1,5 +1,6 @@
-// A card for many projects.
+// A card for quick project summarization.
 //   See `./project-info.js` for where the data comes from.
+//   See `./project-description.js` for a component that describes projects in full.
 Vue.component('project-card', {
   props:{
     project: Object,
@@ -29,11 +30,9 @@ Vue.component('project-card', {
           'button',
           { class:'btn btn-primary btn-lg fw-bold' },
           'Learn more →',
+          // TODO: Make `projects.js` have a <project-description> at the front, modified on-demand.
+          //   (Also, make it transition its height properly on change.)
           // TODO: Make this button, on click, open the project in <projects>'s thing.
-          // TODO: Have `project-info.js`. ...Wait, we already do; it stores the info. What's the untaken name? `project-expanded.js`?
-          //   p.name, …p.urls, …p.images, p.description.
-          //   (p.description should be parsed as Markdown.)
-          //   (p.urls[0] should be in an <iframe> and a link; the rest in links.)
         ),
       ],
     )

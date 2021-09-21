@@ -95,19 +95,19 @@ function sparksOnCollision(world, x, y, linImpulse, angImpulse) {
     const el = document.createElement('div')
     el.className = 'spark'
     el.style.left = x+'px', el.style.top = y+'px'
-    const s = (.5+Math.random()*8) * Math.random() * Math.random()
-    el.style.transform = `translate(0,0) rotate(0deg) translate(0,0) scale(${s})`
+    const s = (.5+Math.random()*4) * Math.random() * Math.random()
+    el.style.transform = `translate(0,0) rotate(0deg) translate(0,0) rotate(0deg) translate(0,0) scale(${s})`
     el.style.opacity = 1
     world.$el.append(el)
     setTimeout(() => {
-      el.style.transform = `translate(${f()}px,${f()}px) rotate(${r(721)-360}deg) translate(${f()}px,${f()}px) scale(${s})`
+      el.style.transform = `translate(${f()}px,${f()}px) rotate(${r(721)-360}deg) translate(${f()}px,${f()}px) rotate(${r(721)-360}deg) translate(${f()}px,${f()}px) scale(${s})`
       el.style.opacity = 0
     }, 0)
     setTimeout(() => el.remove(), 1000)
   }
   function f() {
-    const s = (.5+Math.random()*32) * Math.random() * Math.random()
-    return (r(1001)-500) / Math.sqrt(s)
+    const s = (.5+Math.random()*(32/n)) * Math.random() * Math.random()
+    return (r(501)-250) / Math.sqrt(s)
   }
   function r(n) { return Math.random()*n | 0 }
 }

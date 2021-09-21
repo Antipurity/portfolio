@@ -453,8 +453,9 @@ function _getElemOffset(from, to) {
   \*************************/
 /***/ (() => {
 
-// A card for many projects.
+// A card for quick project summarization.
 //   See `./project-info.js` for where the data comes from.
+//   See `./project-description.js` for a component that describes projects in full.
 Vue.component('project-card', {
   props:{
     project: Object,
@@ -484,11 +485,9 @@ Vue.component('project-card', {
           'button',
           { class:'btn btn-primary btn-lg fw-bold' },
           'Learn more →',
+          // TODO: Make `projects.js` have a <project-description> at the front, modified on-demand.
+          //   (Also, make it transition its height properly on change.)
           // TODO: Make this button, on click, open the project in <projects>'s thing.
-          // TODO: Have `project-info.js`. ...Wait, we already do; it stores the info. What's the untaken name? `project-expanded.js`?
-          //   p.name, …p.urls, …p.images, p.description.
-          //   (p.description should be parsed as Markdown.)
-          //   (p.urls[0] should be in an <iframe> and a link; the rest in links.)
         ),
       ],
     )
@@ -766,19 +765,19 @@ function sparksOnCollision(world, x, y, linImpulse, angImpulse) {
     const el = document.createElement('div')
     el.className = 'spark'
     el.style.left = x+'px', el.style.top = y+'px'
-    const s = (.5+Math.random()*8) * Math.random() * Math.random()
-    el.style.transform = `translate(0,0) rotate(0deg) translate(0,0) scale(${s})`
+    const s = (.5+Math.random()*4) * Math.random() * Math.random()
+    el.style.transform = `translate(0,0) rotate(0deg) translate(0,0) rotate(0deg) translate(0,0) scale(${s})`
     el.style.opacity = 1
     world.$el.append(el)
     setTimeout(() => {
-      el.style.transform = `translate(${f()}px,${f()}px) rotate(${r(721)-360}deg) translate(${f()}px,${f()}px) scale(${s})`
+      el.style.transform = `translate(${f()}px,${f()}px) rotate(${r(721)-360}deg) translate(${f()}px,${f()}px) rotate(${r(721)-360}deg) translate(${f()}px,${f()}px) scale(${s})`
       el.style.opacity = 0
     }, 0)
     setTimeout(() => el.remove(), 1000)
   }
   function f() {
-    const s = (.5+Math.random()*32) * Math.random() * Math.random()
-    return (r(1001)-500) / Math.sqrt(s)
+    const s = (.5+Math.random()*(32/n)) * Math.random() * Math.random()
+    return (r(501)-250) / Math.sqrt(s)
   }
   function r(n) { return Math.random()*n | 0 }
 }
