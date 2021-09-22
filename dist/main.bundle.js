@@ -677,17 +677,23 @@ Vue.component('projects', {
       { domProps:{ id:'projects' } },
       [
         h(
-          'project-description',
-          {
-            on:{ viewproject:pChange },
-            props:{ project: this.viewedProject },
-          },
-          // TODO: Make this transition properly/fancily.
-        ),
-        h(
-          'world',
-          { props:{ _class:'projects' } },
-          ps.map(p => h('project-card', { props:{ project:p, expanded:false }, on:{viewproject:pChange} }))
+          'transition-group',
+          { props:{ name:'fade' } }, // It looks cursed.
+          [
+            this.viewedProject ? h(
+              'project-description',
+              {
+                key: this.viewedProject.name,
+                on:{ viewproject:pChange },
+                props:{ project: this.viewedProject },
+              },
+            ) : undefined,
+            h(
+              'world',
+              { key:'project-cards', props:{ _class:'projects' } },
+              ps.map(p => h('project-card', { props:{ project:p, expanded:false }, on:{viewproject:pChange} }))
+            ),
+          ],
         ),
       ]
     )
