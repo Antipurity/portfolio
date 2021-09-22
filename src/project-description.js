@@ -31,6 +31,14 @@ Vue.component('project-description', {
             h('a', { class:'link-info', attrs:{ href:u } }, u)
           ])),
         ),
+        h( // Images.
+          'div',
+          { class:'images' },
+          p.images.map(im => h(
+            'img',
+            { attrs: { src:`assets/img/${im}` } },
+          )),
+        ),
         typeof marked == 'function' ? h( // Description.
           'p',
           {
@@ -41,15 +49,6 @@ Vue.component('project-description', {
           'p',
           { class:'description' },
           p.description,
-        ),
-        h( // Images.
-          'div',
-          p.images.map(im => h(
-            'img',
-            { attrs: { src:`assets/img/${im}` } },
-            // TODO: Make a carousel of images, not a list.
-            //   ...Bootstrap has a carousel.
-          )),
         ),
         h( // Hide.
           'button',
