@@ -8,7 +8,6 @@
   <script src="https://unpkg.com/vue"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.17.1/matter.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
 <body class="h-100 text-center text-white bg-dark">
   <span id="app" class="cover-container mx-auto w-100 h-100 mx-auto flex-column">
@@ -31,7 +30,7 @@
         <constraint name=link1></constraint>
       </p>
       <obj class="btn btn-lg fw-bold bg-white">
-        <!-- TODO: How do we create the contact form? (And how would it actually contact us?) -->
+        <!-- TODO: How do we create the contact form? (And how would it actually contact us? That's a big one.) -->
         <constraint name=link1></constraint>
         <a style="text-decoration:none; color:#212529" href=#>Contact</a>
         <constraint name=link2></constraint>
@@ -161,14 +160,15 @@
     .project-description .images {
       display: flex;
       flex-flow: row wrap;
+      align-items: center;
       justify-content: space-evenly;
     }
     .project-description .images img {
-      transition: max-height .3s;
+      transition: max-height .2s;
       max-height: 7em;
     }
-    .project-description .images img:hover {
-      max-height: 28em
+    .project-description .images img:active, .project-description .images img:focus {
+      max-height: 28em;
     }
   </style>
 

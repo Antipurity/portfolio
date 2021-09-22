@@ -548,7 +548,7 @@ Vue.component('project-description', {
           { class:'images' },
           p.images.map(im => h(
             'img',
-            { attrs: { src:`assets/img/${im}` } },
+            { attrs: { tabindex:0, src:`assets/img/${im}` } },
           )),
         ),
         typeof marked == 'function' ? h( // Description.
@@ -629,10 +629,24 @@ let projects = JSON.parse(`[
       "https://github.com/antipurity/conceptual"
     ],
     "images":[
-      null,
-      "TODO: Open it (https://Antipurity.github.io/conceptual), and make some screenshots. And put them here, or, uh, somewhere in images."
+      "conc2.png",
+      "conc1.png",
+      "conc3.png",
+      "conc4.png",
+      "conc5.png",
+      "conc6.png",
+      "conc7.png",
+      "conc8.png",
+      "conc9.png",
+      "conc10.png",
+      "conc11.png",
+      "conc12.png",
+      "conc13.png",
+      "conc14.png",
+      "conc15.png",
+      "conc16.png"
     ],
-    "description":"TODO: How do we describe it, in Markdown format?"
+    "description":"Programming language, runtime environment, ML research platform, etc.\\n\\nContains too many parts to describe."
   }
 ]`)
 

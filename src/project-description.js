@@ -36,7 +36,7 @@ Vue.component('project-description', {
           { class:'images' },
           p.images.map(im => h(
             'img',
-            { attrs: { src:`assets/img/${im}` } },
+            { attrs: { tabindex:0, src:`assets/img/${im}` } },
           )),
         ),
         typeof marked == 'function' ? h( // Description.
