@@ -16,29 +16,31 @@ Vue.component('projects', {
     const ps = projects
     const pChange = project => {
       this.viewedProject = project
-      this.$el.scrollIntoView(true)
+      if (this.$refs && this.$refs.projectCards)
+        setTimeout(() => this.$refs.projectCards.$el.scrollIntoView(true), 300)
     }
     return h(
       'p',
       { domProps:{ id:'projects' } },
       [
         h(
+          'world',
+          { key:'project-cards', ref:'projectCards', props:{ _class:'projects' } },
+          ps.map(p => h('project-card', { props:{ project:p, expanded:false }, on:{viewproject:pChange} }))
+        ),
+        h(
           'transition-group',
-          { props:{ name:'fade' } }, // It looks cursed.
+          { ref:'projectCards', props:{ name:'fade' } }, // It looks cursed.
           [
             this.viewedProject ? h(
               'project-description',
               {
                 key: this.viewedProject.name,
+                ref: 'projectDescription',
                 on:{ viewproject:pChange },
                 props:{ project: this.viewedProject },
               },
             ) : undefined,
-            h(
-              'world',
-              { key:'project-cards', props:{ _class:'projects' } },
-              ps.map(p => h('project-card', { props:{ project:p, expanded:false }, on:{viewproject:pChange} }))
-            ),
           ],
         ),
       ]

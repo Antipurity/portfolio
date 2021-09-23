@@ -8,18 +8,17 @@ export let projects = JSON.parse(`[
     "images":[
       "pristine-white-canvas.png"
     ],
-    "description":"A platform for collaborative editing of a single image, pixel by pixel.\\n\\nUtilizes Julia, PostgreSQL, Docker, and JavaScript to deliver an intuitive and cohesive experience. Of editing one image.\\n\\n(The version deployed on Heroku often fails to start, because Julia is a poor choice for web servers, and [takes up too much RAM](https://discourse.julialang.org/t/large-idle-memory-usage/20368/5).)"
+    "description":"A platform for collaborative editing of a single image, pixel by pixel.\\n\\nUtilizes Julia, PostgreSQL, Docker, and JavaScript to deliver an intuitive and cohesive experience. Of editing one image.\\n\\n(The version deployed on Heroku often fails to start, because Julia is not a good choice for web servers, and [takes up too much RAM](https://discourse.julialang.org/t/large-idle-memory-usage/20368/5).)"
   },
   {
     "name":"2048",
     "urls":[
-      "/dist/2048.html"
+      "2048.html"
     ],
     "images":[
-      null,
-      "TODO"
+      "2048.png"
     ],
-    "description":"TODO"
+    "description":"A well-known game, recreated once more.\\n\\nUse arrow keys or arrow buttons to move all blocks, whereupon same-value blocks will combine into one. Last as long as you can; maximize the number that is plotted on the bottom-right.\\n\\nIt uses JavaScript and React.js. The latter is why its animations are somewhat broken."
   },
   {
     "name":"WebEnv",
@@ -28,9 +27,9 @@ export let projects = JSON.parse(`[
     ],
     "images":[
       null,
-      "TODO"
+      "TODO: Copy some images (including the GIF) from WebEnv directories. (Probably even LDL illustrations, why not.)"
     ],
-    "description":"TODO"
+    "description":"TODO: How do we describe this?"
   },
   {
     "name":"Conceptual",
@@ -56,6 +55,6 @@ export let projects = JSON.parse(`[
       "conc15.png",
       "conc16.png"
     ],
-    "description":"Programming language, runtime environment, ML research platform, etc.\\n\\nContains too many parts to describe."
+    "description":"Programming language, runtime environment, ML research platform, etc.\\n\\nContains too many advanced JavaScript manipulations to describe."
   }
 ]`)
