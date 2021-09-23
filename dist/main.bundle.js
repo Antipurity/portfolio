@@ -1,88 +1,6 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./canvas.js":
-/*!*******************!*\
-  !*** ./canvas.js ***!
-  \*******************/
-/***/ (() => {
-
-const N = 8
-draw(newCtx(500, 300), N, fullLayers(N, 1))
-draw(newCtx(500, 300), N, hyperLayers(N, 2, 1))
-
-
-function newCtx(w, h) {
-  const ctx = document.body.appendChild(document.createElement('canvas')).getContext('2d')
-  ctx.canvas.width = w, ctx.canvas.height = h
-  return ctx
-}
-
-function fullLayers(N = 16, layers = 1) {
-  const res = []
-  for (let L = 0; L < layers; ++L)
-    res.push(function fullLayer(connect, from, to) {
-      for (let i = 0; i < from; ++i)
-        for (let j = 0; j < to; ++j)
-          connect(i, j)
-    })
-  return res
-}
-
-function hyperLayers(N = 16, n = 2, layers = 1) {
-  const res = []
-  for (let L = 0; L < layers; ++L) {
-    const subs = Math.ceil(Math.log(N) / Math.log(n) - 1e-8)
-    for (let sub = 0; sub < subs; ++sub)
-      res.push(function logLayer(connect, from, to) {
-        const stride = n ** sub
-        for (let to = 0; to < N; ++to) {
-          let batch_id = to % stride + (to / (n*stride) | 0) * n*stride
-          for (let i = 0, from = batch_id; i < n && from < N; ++i, from += stride)
-            connect(from, to)
-        }
-      })
-  }
-  return res.reverse()
-}
-
-function draw(ctx, n = 16, layers = [], radius = 4) {
-  const lineW = 1
-  const w = ctx.canvas.width - 2*(radius+lineW), h = ctx.canvas.height - 2*(radius+lineW)
-  const offsetX = radius+lineW, offsetY = radius+lineW
-  ctx.fillStyle = 'lightgray', ctx.strokeStyle = 'gray', ctx.lineWidth = lineW
-  let prevProgress = 0, nextProgress = 0
-  for (let L = 0; L <= layers.length; ++L) {
-    prevProgress = L / layers.length, nextProgress = (L+1) / layers.length
-    // Connect layers as they define.
-    if (L < layers.length)
-      layers[L](connect, n, n)
-  }
-  for (let L = 0; L <= layers.length; ++L) {
-    prevProgress = L / layers.length, nextProgress = (L+1) / layers.length
-    // Draw circles.
-    for (let j = 0; j < n; ++j) {
-      const x = offsetX + prevProgress * w, y = offsetY + j / (n-1 || 1) * h
-      ctx.beginPath()
-      ctx.arc(x, y, radius, 0, 2*Math.PI)
-      ctx.fill()
-      ctx.stroke()
-    }
-  }
-  return ctx
-  function connect(from, to) {
-    const fromX = offsetX + prevProgress * w, fromY = offsetY + from / (n-1 || 1) * h
-    const toX = offsetX + nextProgress * w, toY = offsetY + to / (n-1 || 1) * h
-    ctx.beginPath()
-    ctx.moveTo(fromX, fromY)
-    ctx.lineTo(toX, toY)
-    ctx.stroke()
-  }
-}
-
-
-/***/ }),
-
 /***/ "./physics.js":
 /*!********************!*\
   !*** ./physics.js ***!
@@ -104,6 +22,8 @@ Vue.component('world', {
   render(h) {
     this.engine.gravity.x = this.gravityX
     this.engine.gravity.y = this.gravityY
+    this.engine.positionIterations = 10
+    this.engine.constraintIterations = 10
     return h('span',
       { class: this._class, style:{ position: 'relative' }, },
       [
@@ -680,13 +600,19 @@ Vue.component('projects', {
         setTimeout(() => this.$refs.projectCards.$el.scrollIntoView(true), 300)
     }
     return h(
-      'p',
-      { domProps:{ id:'projects' } },
+      'div',
       [
         h(
           'world',
-          { key:'project-cards', ref:'projectCards', props:{ _class:'projects' } },
-          ps.map(p => h('project-card', { props:{ project:p, expanded:false }, on:{viewproject:pChange} }))
+          { class:'projects-container wholeWidth', domProps:{ id:'projects' } },
+          [
+            this.$slots.default,
+            h(
+              'div',
+              { key:'project-cards', ref:'projectCards', class:'projects' },
+              ps.map(p => h('project-card', { props:{ project:p, expanded:false }, on:{viewproject:pChange} }))
+            ),
+          ]
         ),
         h(
           'transition-group',
@@ -788,10 +714,7 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _physics_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./physics.js */ "./physics.js");
 /* harmony import */ var _physics_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_physics_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _canvas_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./canvas.js */ "./canvas.js");
-/* harmony import */ var _canvas_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_canvas_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _projects_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./projects.js */ "./projects.js");
-
+/* harmony import */ var _projects_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./projects.js */ "./projects.js");
 
 
 

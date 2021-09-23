@@ -13,6 +13,8 @@ Vue.component('world', {
   render(h) {
     this.engine.gravity.x = this.gravityX
     this.engine.gravity.y = this.gravityY
+    this.engine.positionIterations = 10
+    this.engine.constraintIterations = 10
     return h('span',
       { class: this._class, style:{ position: 'relative' }, },
       [

@@ -1,5 +1,4 @@
 import './physics.js'
-import './canvas.js'
 import './projects.js'
 
 

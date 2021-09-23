@@ -1,6 +1,7 @@
-const N = 8
+// Visualizations of linearithmic and quadratic dense layers.
+const N = 256
 draw(newCtx(500, 300), N, fullLayers(N, 1))
-draw(newCtx(500, 300), N, hyperLayers(N, 2, 1))
+draw(newCtx(500, 300), N, hyperLayers(N, 4, 1))
 
 
 function newCtx(w, h) {

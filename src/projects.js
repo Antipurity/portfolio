@@ -20,13 +20,19 @@ Vue.component('projects', {
         setTimeout(() => this.$refs.projectCards.$el.scrollIntoView(true), 300)
     }
     return h(
-      'p',
-      { domProps:{ id:'projects' } },
+      'div',
       [
         h(
           'world',
-          { key:'project-cards', ref:'projectCards', props:{ _class:'projects' } },
-          ps.map(p => h('project-card', { props:{ project:p, expanded:false }, on:{viewproject:pChange} }))
+          { class:'projects-container wholeWidth', domProps:{ id:'projects' } },
+          [
+            this.$slots.default,
+            h(
+              'div',
+              { key:'project-cards', ref:'projectCards', class:'projects' },
+              ps.map(p => h('project-card', { props:{ project:p, expanded:false }, on:{viewproject:pChange} }))
+            ),
+          ]
         ),
         h(
           'transition-group',
