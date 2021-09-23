@@ -16,14 +16,8 @@ Vue.component('project-description', {
           p.name,
         ),
         h( // The first link, to spare a click.
-          'div',
-          { class:'iframe-container', },
-          [
-            h(
-              'iframe',
-              { attrs:{ src:p.urls[0] }, ref:'iframe' },
-            ),
-          ],
+          'iframe',
+          { attrs:{ src:p.urls[0] }, ref:'iframe' },
         ),
         h( // Links.
           'div',
