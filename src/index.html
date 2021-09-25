@@ -24,11 +24,10 @@
           <constraint name=link3></constraint>
           <constraint name=link1></constraint>
         </p>
-        <obj class="btn btn-lg fw-bold bg-white">
-          <!-- TODO: How do we create the contact form? -->
-          <!--    TODO: fetch('https://alefedo-mailer.herokuapp.com', { method:'POST', mode:'cors', body:JSON.stringify({ subject:'deploymentTest', text:'hiya' }) }).then(console.log) --- returns 200 if OK. -->
+        <!-- Making sure that we did not drag when clicked is too much work, since Vue doesn't care about DOM events (so we can't set up a global system). -->
+        <obj _class="btn btn-lg fw-bold bg-white" v-on:click="contactHidden=!contactHidden">
           <constraint name=link1></constraint>
-          <span style="color:#212529" v-on:click="contactHidden=!contactHidden">Contact</span>
+          <span style="color:#212529">Contact</span>
           <constraint name=link2></constraint>
         </obj>
       </div>
@@ -129,7 +128,7 @@
       align-items: center;
       justify-content: center;
     }
-    button.btn.btn-primary {
+    button.btn.btn-primary:not(.disabled) {
       border: none;
       display: inline-block;
       margin-top: auto;
@@ -137,7 +136,7 @@
       background: radial-gradient(circle at var(--x,-4em) var(--y,-4em), white, #87b7fe 1em, #5092fe 2em, #0d6efd 4em);
       /* Parents give --x/--y to children too, but, that might as well be a feature, not a bug. */
     }
-    button.btn.btn-primary:active {
+    button.btn.btn-primary:active:not(.disabled) {
       background: radial-gradient(circle at var(--x,-4em) var(--y,-4em), white, #9ecfff 1em, #6eb6ff 2em, #3d9eff 4em);
     }
     .project-description {
@@ -169,6 +168,9 @@
     .fade-enter-active, .fade-leave-active, .fade-move, .slide-enter-active,.slide-leave-active,.slide-move {
       transition: opacity .2s, transform .2s;
     }
+    .slide-enter-active.explanation-for-waiting {
+      transition: transform .2s 4s;
+    }
     .fade-enter {
       opacity: 0;
       transform: rotate(-200deg);
@@ -181,6 +183,7 @@
     .slide-enter, .slide-leave-active {
       /* Sure, `width:100%` things stretch when leaving, but with `scale`, it's unnoticeable. */
       transform: translateX(-1000px) scale(0);
+      position: absolute;
     }
   </style>
 </body>

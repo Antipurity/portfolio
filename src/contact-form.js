@@ -4,8 +4,17 @@
 
 Vue.component('contact-form', {
   props: ['value'], // If true, hide the form.
+  data() {
+    return {
+      state: 'idle', // idle, waiting, error, ok
+      message: '',
+    }
+  },
   render(h) {
     if (!this.value) setTimeout(() => this.$el && this.$el.scrollIntoView(true), 10)
+    clearTimeout(this.id)
+    if (this.state === 'error' || this.state === 'ok')
+      this.id = setTimeout(() => { this.state = 'idle', this.message = '' }, 5000)
     return h(
       'div',
       { class:this.value ? '' : 'oneScreen' },
@@ -59,12 +68,33 @@ Vue.component('contact-form', {
                 h(
                   'button',
                   {
-                    class:'col btn btn-primary',
+                    class:['col btn btn-primary', this.state === 'waiting' && 'disabled'],
                     style:{ margin:'0 5px 0 5px' },
-                    // TODO: On button click, only succeed if not empty and {subject,text}'s JSON length is <=20000, and on success, `fetch('https://alefedo-mailer.herokuapp.com', { method:'POST', mode:'cors', body:JSON.stringify({ subject, text }) }).then(console.log)`. Make `this.$refs.sender.value` a part of the text, if present.
-                    //   TODO: Display progress when sending (along with an explanation of why it could be taking so long: someone else could be sending right now, so, wait), along with error and success messages.
+                    on:{ click: () => {
+                      if (this.state === 'waiting') return
+                      const r = this.$refs
+                      const obj = {
+                        subject: r.subject.value || 'Contacting',
+                        text: r.from.value ? 'From: ' + r.from.value + '\n\n' + r.body.value : r.body.value,
+                      }
+                      if (!obj.text.length)
+                        return this.state = 'error', this.message = 'Cannot send an empty message'
+                      const msg = JSON.stringify(obj)
+                      if (msg.length > 20000)
+                        return this.state = 'error', this.message = 'The message is too long; remove ' + (msg.length - 20000) + ' characters'
+                      this.state = 'waiting', this.message = 'Taking a while. The queue is probably full; wait a minute.'
+                      fetch('https://alefedo-mailer.herokuapp.com', { method:'POST', mode:'cors', body:msg })
+                      .then(() => { this.state = 'ok', this.message = 'Sent' })
+                      .catch(() => { this.state = 'error', this.message = 'Failed to contact' })
+                    } },
                   },
-                  'Send',
+                  [
+                    this.state === 'waiting' && h(
+                      'div',
+                      { key:'tiwitibbot', class:'spinner-border spinner-border-sm text-light' },
+                    ),
+                    ' Send',
+                  ],
                 ),
                 h(
                   'button',
@@ -76,6 +106,17 @@ Vue.component('contact-form', {
                   'Don\'t send',
                 ),
               ],
+            ),
+            h(
+              'div',
+              {
+                key: this.message || ' ',
+                class: [
+                  this.state === 'waiting' ? 'text-secondary' : this.state === 'error' ? 'text-danger' : this.state === 'ok' ? 'text-success' : '',
+                  this.state === 'waiting' ? 'explanation-for-waiting' : '',
+                ],
+              },
+              this.message || ' ',
             ),
           ],
         )

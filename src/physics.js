@@ -13,8 +13,8 @@ Vue.component('world', {
   render(h) {
     this.engine.gravity.x = this.gravityX
     this.engine.gravity.y = this.gravityY
-    this.engine.positionIterations = 10
-    this.engine.constraintIterations = 10
+    this.engine.positionIterations = 8
+    this.engine.constraintIterations = 8
     return h('span',
       { class: this._class, style:{ position: 'relative' }, },
       [
@@ -210,7 +210,7 @@ Vue.component('obj', {
       this.body.restitution = this.restitution
       this.body.isStatic = this.static
     }
-    return h('span', { class:this._class }, this.$slots.default)
+    return h('span', { class:this._class, on:this.$options._parentListeners }, this.$slots.default)
   },
   async mounted() {
     this.$el._vueObj = this
