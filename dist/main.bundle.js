@@ -24,6 +24,11 @@ Vue.component('contact-form', {
           { props:{name:'slide'},  style:{ width:'100%', maxWidth:'50rem', margin:'auto' } },
           this.value ? [] : [
             h(
+              'h2',
+              { key:'andjahkdfhasfhk' },
+              'Contact me',
+            ),
+            h(
               'div',
               { key:'a', class:'row mb-3', style:{ margin:'0 -5px 0 -5px' } },
               [
