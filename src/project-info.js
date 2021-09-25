@@ -18,7 +18,7 @@ export let projects = JSON.parse(`[
     "images":[
       "2048.png"
     ],
-    "description":"A well-known game, recreated once more.\\n\\nUse arrow keys or arrow buttons to move all blocks, whereupon same-value blocks will combine into one. Last as long as you can; maximize the number that is plotted on the bottom-right.\\n\\nIt uses JavaScript and React.js. The latter is why its animations are somewhat broken."
+    "description":"A well-known game, recreated once more.\\n\\nUse arrow keys or arrow buttons to move all blocks, whereupon same-value blocks will combine into one. Last as long as you can; maximize the number that is plotted on the bottom-right.\\n\\nIt uses JavaScript and React. The latter is why its animations are somewhat broken."
   },
   {
     "name":"WebEnv",

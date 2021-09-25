@@ -12,8 +12,7 @@
 <body class="h-100 text-center text-white bg-dark">
   <span id="app" class="cover-container mx-auto w-100 h-100 mx-auto flex-column">
     <projects>
-      <div class="wholeWidth oneScreen d-flex flex-column justify-content-center align-items-center">
-        <div class="mb-auto"></div>
+      <div class="wholeWidth oneScreen">
         <p class="lead" style="user-select:none">
           <constraint name=link2></constraint>
           <constraint name=link4></constraint>
@@ -26,15 +25,15 @@
           <constraint name=link1></constraint>
         </p>
         <obj class="btn btn-lg fw-bold bg-white">
-          <!-- TODO: How do we create the contact form? (And how would it actually contact us? That's a big one.) -->
-          <!--    …May want to host a simple Nodemailer server on Heroku… -->
+          <!-- TODO: How do we create the contact form? -->
+          <!--    TODO: fetch('https://alefedo-mailer.herokuapp.com', { method:'POST', mode:'cors', body:JSON.stringify({ subject:'deploymentTest', text:'hiya' }) }).then(console.log) --- returns 200 if OK. -->
           <constraint name=link1></constraint>
-          <a style="text-decoration:none; color:#212529" href=#>Contact</a>
+          <span style="color:#212529" v-on:click="contactHidden=!contactHidden">Contact</span>
           <constraint name=link2></constraint>
         </obj>
-        <div class="mt-auto"></div>
       </div>
     </projects>
+    <contact-form v-model="contactHidden"></contact-form>
   </span>
 
   <style>
@@ -47,13 +46,17 @@
       border-radius: 1em;
       padding: 1em;
     }
-    .oneScreen {
-      height: 100vh;
-    }
     .wholeWidth {
       overflow: hidden;
       display: block;
       width: 100%;
+    }
+    .oneScreen {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-flow: column nowrap;
     }
     .block {
       display: inline-block;
@@ -163,7 +166,7 @@
   </style>
 
   <style>
-    .fade-enter-active, .fade-leave-active, .fade-move {
+    .fade-enter-active, .fade-leave-active, .fade-move, .slide-enter-active,.slide-leave-active,.slide-move {
       transition: opacity .2s, transform .2s;
     }
     .fade-enter {
@@ -174,6 +177,10 @@
       position: absolute;
       opacity: 0;
       transform: rotate(100deg);
+    }
+    .slide-enter, .slide-leave-active {
+      /* Sure, `width:100%` things stretch when leaving, but with `scale`, it's unnoticeable. */
+      transform: translateX(-1000px) scale(0);
     }
   </style>
 </body>

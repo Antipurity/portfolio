@@ -1,5 +1,6 @@
 import './physics.js'
 import './projects.js'
+import './contact-form.js'
 
 
 
@@ -22,6 +23,7 @@ window.app = new Vue({
     oncollision: sparksOnCollision,
   },
   data:{
+    contactHidden: true,
     description:[
       'A ',
       'software engineer',
@@ -70,6 +72,7 @@ function setMousePosition(evt, remove = false) {
   const elem = evt.target
   if (elem && !(elem instanceof Element)) elem = elem.parentNode
   if (!elem || !(elem instanceof Element)) return
+  if (elem.tagName !== 'BUTTON') return // Only using it for this anyway.
   if (!remove) {
     const x = evt.offsetX, y = evt.offsetY
     if (x || y) elem.style.setProperty('--x', x+'px')

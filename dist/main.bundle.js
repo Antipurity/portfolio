@@ -1,6 +1,95 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./contact-form.js":
+/*!*************************!*\
+  !*** ./contact-form.js ***!
+  \*************************/
+/***/ (() => {
+
+// A form to contact us with.
+
+
+
+Vue.component('contact-form', {
+  props: ['value'], // If true, hide the form.
+  render(h) {
+    if (!this.value) setTimeout(() => this.$el && this.$el.scrollIntoView(true), 10)
+    return h(
+      'div',
+      { class:this.value ? '' : 'oneScreen' },
+      [
+        h(
+          'transition-group',
+          { props:{name:'slide'},  style:{ width:'100%', maxWidth:'50rem', margin:'auto' } },
+          this.value ? [] : [
+            h(
+              'div',
+              { key:'a', class:'row mb-3', style:{ margin:'0 -5px 0 -5px' } },
+              [
+                h(
+                  'input',
+                  {
+                    ref:'from',
+                    class:'col form-control',
+                    style:{ margin:'0 5px 0 5px' },
+                    domProps:{ placeholder:'From: jsmith@example.com', type:'email' },
+                  },
+                ),
+                h(
+                  'input',
+                  {
+                    ref:'subject',
+                    class:'col form-control',
+                    style:{ margin:'0 5px 0 5px' },
+                    domProps:{ placeholder:'Subject', type:'text' },
+                  },
+                ),
+              ],
+            ),
+            h(
+              'textarea',
+              {
+                key:'b',
+                ref:'body',
+                class:'form-control mb-3 w-100',
+                domProps:{ placeholder:'Text', rows:10 },
+              },
+            ),
+            h(
+              'div',
+              { key:'c', class:'row', style:{ margin:'0 -5px 0 -5px' } },
+              [
+                h(
+                  'button',
+                  {
+                    class:'col btn btn-primary',
+                    style:{ margin:'0 5px 0 5px' },
+                    // TODO: On button click, only succeed if not empty and {subject,text}'s JSON length is <=20000, and on success, `fetch('https://alefedo-mailer.herokuapp.com', { method:'POST', mode:'cors', body:JSON.stringify({ subject, text }) }).then(console.log)`. Make `this.$refs.sender.value` a part of the text, if present.
+                    //   TODO: Display progress when sending (along with an explanation of why it could be taking so long: someone else could be sending right now, so, wait), along with error and success messages.
+                  },
+                  'Send',
+                ),
+                h(
+                  'button',
+                  {
+                    class:'col btn btn-secondary',
+                    style:{ margin:'0 5px 0 5px' },
+                    on:{ click: () => { this.$emit('input', !this.hidden) } },
+                  },
+                  'Don\'t send',
+                ),
+              ],
+            ),
+          ],
+        )
+      ],
+    )
+  },
+})
+
+/***/ }),
+
 /***/ "./physics.js":
 /*!********************!*\
   !*** ./physics.js ***!
@@ -522,7 +611,7 @@ let projects = JSON.parse(`[
     "images":[
       "2048.png"
     ],
-    "description":"A well-known game, recreated once more.\\n\\nUse arrow keys or arrow buttons to move all blocks, whereupon same-value blocks will combine into one. Last as long as you can; maximize the number that is plotted on the bottom-right.\\n\\nIt uses JavaScript and React.js. The latter is why its animations are somewhat broken."
+    "description":"A well-known game, recreated once more.\\n\\nUse arrow keys or arrow buttons to move all blocks, whereupon same-value blocks will combine into one. Last as long as you can; maximize the number that is plotted on the bottom-right.\\n\\nIt uses JavaScript and React. The latter is why its animations are somewhat broken."
   },
   {
     "name":"WebEnv",
@@ -596,8 +685,9 @@ Vue.component('projects', {
     const ps = _project_info_js__WEBPACK_IMPORTED_MODULE_2__.projects
     const pChange = project => {
       this.viewedProject = project
+      const el = this.$refs.projectCards.$el
       if (this.$refs && this.$refs.projectCards)
-        setTimeout(() => this.$refs.projectCards.$el.scrollIntoView(true), 300)
+        setTimeout(() => el.scrollIntoView(true), 10), setTimeout(() => el.scrollIntoView(true), 300)
     }
     return h(
       'div',
@@ -616,7 +706,7 @@ Vue.component('projects', {
         ),
         h(
           'transition-group',
-          { ref:'projectCards', props:{ name:'fade' } }, // It looks cursed.
+          { ref:'projectCards', props:{ name:'slide' } },
           [
             this.viewedProject ? h(
               'project-description',
@@ -715,6 +805,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _physics_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./physics.js */ "./physics.js");
 /* harmony import */ var _physics_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_physics_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _projects_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./projects.js */ "./projects.js");
+/* harmony import */ var _contact_form_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./contact-form.js */ "./contact-form.js");
+/* harmony import */ var _contact_form_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_contact_form_js__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 
@@ -739,6 +832,7 @@ window.app = new Vue({
     oncollision: sparksOnCollision,
   },
   data:{
+    contactHidden: true,
     description:[
       'A ',
       'software engineer',
@@ -787,6 +881,7 @@ function setMousePosition(evt, remove = false) {
   const elem = evt.target
   if (elem && !(elem instanceof Element)) elem = elem.parentNode
   if (!elem || !(elem instanceof Element)) return
+  if (elem.tagName !== 'BUTTON') return // Only using it for this anyway.
   if (!remove) {
     const x = evt.offsetX, y = evt.offsetY
     if (x || y) elem.style.setProperty('--x', x+'px')

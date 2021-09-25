@@ -16,8 +16,9 @@ Vue.component('projects', {
     const ps = projects
     const pChange = project => {
       this.viewedProject = project
+      const el = this.$refs.projectCards.$el
       if (this.$refs && this.$refs.projectCards)
-        setTimeout(() => this.$refs.projectCards.$el.scrollIntoView(true), 300)
+        setTimeout(() => el.scrollIntoView(true), 10), setTimeout(() => el.scrollIntoView(true), 300)
     }
     return h(
       'div',
@@ -36,7 +37,7 @@ Vue.component('projects', {
         ),
         h(
           'transition-group',
-          { ref:'projectCards', props:{ name:'fade' } }, // It looks cursed.
+          { ref:'projectCards', props:{ name:'slide' } },
           [
             this.viewedProject ? h(
               'project-description',
