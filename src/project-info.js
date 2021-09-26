@@ -23,13 +23,18 @@ export let projects = JSON.parse(`[
   {
     "name":"WebEnv",
     "urls":[
-      "https://github.com/Antipurity/webenv"
+      null,
+      "https://github.com/antipurity/webenv"
     ],
     "images":[
-      null,
-      "TODO: Copy some images (including the GIF) from WebEnv directories. (Probably even LDL illustrations, why not.)"
+      "noexplore-anim.gif",
+      "orange-explore-blue-not.png",
+      "agent-1.png",
+      "agent-2.png",
+      "agent-3.png",
+      "agent-4.png"
     ],
-    "description":"TODO: How do we describe this?"
+    "description":"Online training environment for machine learning agents, combining scalability and scope.\\n\\nBold and innovative: intended for training agents on the whole Web directly, without contemporary intermediaries such as [\\"text\\"](https://arxiv.org/abs/2101.00027) or [\\"text-image pairs\\"](https://github.com/openai/CLIP).\\n\\nWritten in JavaScript (with an optional bridge to Python), this launches a browser (via Puppeteer), and collects observations and dispatches actions, so that the only thing that users have to worry about is how to go from observations to actions."
   },
   {
     "name":"Conceptual",

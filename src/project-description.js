@@ -15,13 +15,13 @@ Vue.component('project-description', {
           { class:'name' },
           p.name,
         ),
-        h( // The first link, to spare a click.
+        p.urls[0] && h( // The first link, to spare a click.
           'iframe',
           { attrs:{ src:p.urls[0] }, ref:'iframe' },
         ),
         h( // Links.
           'div',
-          p.urls.map(u => h('div', [
+          p.urls.filter(u => u).map(u => h('div', [
             h('a', { class:'link-info', attrs:{ href:u } }, u)
           ])),
         ),
