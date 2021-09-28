@@ -13,7 +13,7 @@ module.exports = {
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'docs'),
     clean: true,
   },
   plugins: [
