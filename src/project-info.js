@@ -34,7 +34,7 @@ export let projects = JSON.parse(`[
       "agent-3.png",
       "agent-4.png"
     ],
-    "description":"Online training environment for machine learning agents, combining scalability and scope.\\n\\nBold and innovative: intended for training agents on the whole Web directly, without contemporary intermediaries such as [\\"text\\"](https://arxiv.org/abs/2101.00027) or [\\"text-image pairs\\"](https://github.com/openai/CLIP).\\n\\nWritten in JavaScript (with an optional bridge to Python), this launches a browser (via Puppeteer), and collects observations and dispatches actions, so that the only thing that users have to worry about is how to go from observations to actions."
+    "description":"Online training environment for machine learning agents, combining scalability and scope.\\n\\nBold and innovative: intended for training agents on the whole Web directly, without contemporary intermediaries such as [\\"text\\"](https://arxiv.org/abs/2101.00027) or [\\"text-image pairs\\"](https://github.com/openai/CLIP).\\n\\nWritten in JavaScript using Node.js (with an optional bridge to Python), this launches a browser (via Puppeteer), and collects observations and dispatches actions, so that the only thing that users have to worry about is how to go from observations to actions."
   },
   {
     "name":"Conceptual",
