@@ -899,11 +899,11 @@ window.app = new Vue({
 // Intermittently, update the description randomly.
 function pick(a) { return a[Math.random() * a.length | 0] }
 setTimeout(function f() {
-  // TODO: More descriptive & concrete things.
   app.description[1] = pick([
     'software engineer',
     'developer',
     'person',
+    'full stack developer',
   ]), app.description = [...app.description]
   setTimeout(f, Math.random() * 20000)
 }, Math.random() * 20000)
@@ -916,11 +916,11 @@ setTimeout(function f() {
   setTimeout(f, Math.random() * 40000)
 }, Math.random() * 40000)
 setTimeout(function f() {
-  // TODO: More descriptive & concrete things.
   app.description[3] = pick([
     'builds stuff',
     'delivers code',
     'creates experiences',
+    'finds creative solutions',
   ]), app.description = [...app.description]
   setTimeout(f, Math.random() * 20000)
 }, Math.random() * 20000)
