@@ -34,7 +34,7 @@ export let projects = JSON.parse(`[
       "agent-3.png",
       "agent-4.png"
     ],
-    "description":"Online training environment for machine learning agents, combining scalability and scope.\\n\\nBold and innovative: intended for training agents on the whole Web directly, without contemporary intermediaries such as [\\"text\\"](https://arxiv.org/abs/2101.00027) or [\\"text-image pairs\\"](https://github.com/openai/CLIP).\\n\\nWritten in JavaScript using Node.js (with an optional bridge to Python), this launches a browser (via Puppeteer), and collects observations and dispatches actions, so that the only thing that users have to worry about is how to go from observations to actions."
+    "description":"Online training environment for machine learning agents, combining scalability and scope.\\n\\nBold and innovative: intended for training agents on the whole Web directly, without contemporary intermediaries such as [\\"text\\"](https://arxiv.org/abs/2101.00027) or [\\"text-image pairs\\"](https://github.com/openai/CLIP).\\n\\nWritten in JavaScript using Node.js (with an optional bridge to Python and other languages), this launches a browser (via Puppeteer), and collects observations and dispatches actions, so that the only thing that users have to worry about is how to go from observations to actions."
   },
   {
     "name":"Conceptual",
@@ -60,6 +60,6 @@ export let projects = JSON.parse(`[
       "conc15.png",
       "conc16.png"
     ],
-    "description":"Programming language, runtime environment, ML research platform, etc.\\n\\nContains too many advanced JavaScript manipulations to describe."
+    "description":"Programming language, runtime environment, ML research platform, etc. Includes many advanced uses of JavaScript and NodeJS.\\n\\nExperimenting with novel ways to create and interact with code. As such, the experience brought a lot of clarity and expertise in writing concise and crisp programs, even if humanity has its own preferred ways of doing things.\\n\\nThe purpose was to create a perfectly crisp framework of thought about everything, to pin down exactly what 'AGI' means and pin down its behaviors and implementation suggestions. This allows me to come up with creative solutions to any problems."
   }
 ]`)
