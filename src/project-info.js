@@ -1,5 +1,18 @@
 export let projects = JSON.parse(`[
   {
+    "name":"Text-sharing site",
+    "urls":[
+      "https://text-sharing-site.herokuapp.com/",
+      "https://github.com/Antipurity/text-sharing-site"
+    ],
+    "images":[
+      "text-sharing-site-1.jpg",
+      "text-sharing-site-2.jpg",
+      "text-sharing-site-3.jpg"
+    ],
+    "description":"A site where users share posts: pieces of Markdown content.\\n\\nUses Rust (a fast system programming language) and Firebase (a platform with a database offering), deployed on Heroku.\\n\\nThese pieces were not meant to go together."
+  },
+  {
     "name":"Image Modifier Project",
     "urls":[
       "https://image-modifier-project.herokuapp.com/",
@@ -27,6 +40,7 @@ export let projects = JSON.parse(`[
       "https://github.com/antipurity/webenv"
     ],
     "images":[
+      "agent-5.gif",
       "noexplore-anim.gif",
       "orange-explore-blue-not.png",
       "agent-1.png",
@@ -34,7 +48,7 @@ export let projects = JSON.parse(`[
       "agent-3.png",
       "agent-4.png"
     ],
-    "description":"Online training environment for machine learning agents, combining scalability and scope.\\n\\nBold and innovative: intended for training agents on the whole Web directly, without contemporary intermediaries such as [\\"text\\"](https://arxiv.org/abs/2101.00027) or [\\"text-image pairs\\"](https://github.com/openai/CLIP).\\n\\nWritten in JavaScript using Node.js (with an optional bridge to Python and other languages), this launches a browser (via Puppeteer), and collects observations and dispatches actions, so that the only thing that users have to worry about is how to go from observations to actions."
+    "description":"Online training environment for machine learning agents.\\n\\nIntended for training agents on the whole Web directly, without intermediaries such as [text](https://arxiv.org/abs/2101.00027) or [text-image pairs](https://github.com/openai/CLIP).\\n\\nWritten in JavaScript using Node.js (with an optional bridge to Python and other languages), this launches a browser (via Puppeteer), and collects observations and dispatches actions, so that the only thing that users have to worry about is how to go from observations to actions (the ML model)."
   },
   {
     "name":"Conceptual",
